@@ -22,14 +22,26 @@ public class StudentController {
     @Autowired
     private StudentRepository studentRepository;
 
-    //Aquí había un NAME en vez de un value.
-    //@RequestMapping(name = ....)
+    /*  Aquí había un NAME en vez de un value. Por eso no resultó el swagger.
+        El motivo, es porque al escribir el parámetro name, se sobreescribía la ruta del aplication.properties.
+        @RequestMapping(name = ....)*/
     @RequestMapping(value = "/name", method = RequestMethod.GET)
     public Student getStudentByName(@RequestParam("nombre") String name)
     {
         return studentRepository.findByName(name);
     }
 
+    /*  Para el metodo POST, que es cuando se desea crear el objeto en cuestión,
+        en este caso Student, al poner en los parámetros un @RequestBody seguido del objeto
+        (Student student) Spring asume que el JSON en cuestión que se debe ingresar será
+        con los atributos de la clase Student, de la siguiente forma:
+        {
+          "name": "el nombre que quieren guardar",
+          "rut" : "el rut"
+        }
+        Lo más probable es que swagger muestre el formato automáticamente, junto con el idStudent
+        ustedes borrenlo, ya que pusimos que era auto-incremental.
+     */
     @RequestMapping(value="/create", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
